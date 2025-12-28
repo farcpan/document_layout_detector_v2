@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  document-layout-detector:
+    build: .
+    image: document-layout-detector:latest
+    container_name: doc-layout-detector
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+      - ./models:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: /app/input --output-dir /app/output

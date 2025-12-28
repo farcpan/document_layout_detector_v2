@@ -1,3 +1,28 @@
+CLAUDE.md
+.claude
+
+# model file
+*.pt
+*.zip
+examples/*
+models/*
+DocLayNet/*
+
+# input files
+input/*.png
+input/*.jpg
+
+# Project specific
+models/*.pt
+models/*.pth
+models/*.onnx
+output/
+input/*
+!input/.gitkeep
+datasets/
+runs/
+*.weights
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
