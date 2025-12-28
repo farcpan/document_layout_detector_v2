@@ -87,8 +87,8 @@ unzip DocLayNet_core.zip -d DocLayNet/
 # YOLO形式に変換
 python prepare_dataset.py \
   --dataset-type doclaynet \
-  --dataset-root DocLayNet/ \
-  --output-dir datasets/doclaynet_yolo
+  --dataset-root DocLayNet/COCO \
+  --output-dir dataset_yolo
 ```
 
 ### 2. 学習の実行
@@ -96,7 +96,7 @@ python prepare_dataset.py \
 ```bash
 # CPU環境での学習（遅い）
 python train.py \
-  --data datasets/doclaynet_yolo/dataset.yaml \
+  --data dataset_yolo/dataset.yaml \
   --model yolov8n.pt \
   --epochs 50 \
   --batch 8 \
@@ -104,7 +104,7 @@ python train.py \
 
 # GPU環境での学習（推奨）
 python train.py \
-  --data datasets/doclaynet_yolo/dataset.yaml \
+  --data dataset_yolo/dataset.yaml \
   --model yolov8n.pt \
   --epochs 100 \
   --batch 16 \

@@ -39,22 +39,25 @@ def prepare_doclaynet_dataset(
         'Page-header', 'Picture', 'Section-header', 'Table', 'Text', 'Title'
     ]
 
+    # DocLayNetの実際の構造に合わせる
+    coco_dir = dataset_root / 'COCO'
+    png_dir = dataset_root / 'PNG'
+
+    if not coco_dir.exists():
+        raise FileNotFoundError(f"COCOディレクトリが見つかりません: {coco_dir}")
+    if not png_dir.exists():
+        raise FileNotFoundError(f"PNGディレクトリが見つかりません: {png_dir}")
+
     for split in splits:
         print(f"\n{split}セットを処理中...")
-
-        split_dir = dataset_root / split
-        if not split_dir.exists():
-            print(f"警告: {split_dir}が見つかりません。スキップします。")
-            continue
 
         images_output_dir = output_dir / 'images' / split
         labels_output_dir = output_dir / 'labels' / split
         images_output_dir.mkdir(parents=True, exist_ok=True)
         labels_output_dir.mkdir(parents=True, exist_ok=True)
 
-        annotation_file = split_dir / f'{split}_annotations.json'
-        if not annotation_file.exists():
-            annotation_file = split_dir / 'annotations.json'
+        # アノテーションファイルはCOCOディレクトリ内にある
+        annotation_file = coco_dir / f'{split}.json'
 
         if not annotation_file.exists():
             print(f"警告: {annotation_file}が見つかりません。スキップします。")
@@ -78,9 +81,11 @@ def prepare_doclaynet_dataset(
 
         for image_id, image_info in tqdm(image_id_to_info.items(), desc=split):
             image_filename = image_info['file_name']
-            image_path = split_dir / image_filename
+            # すべての画像はPNGディレクトリ内にある
+            image_path = png_dir / image_filename
 
             if not image_path.exists():
+                print(f"警告: 画像ファイルが見つかりません: {image_path}")
                 continue
 
             shutil.copy(image_path, images_output_dir / image_filename)
